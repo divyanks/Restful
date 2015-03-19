@@ -1,0 +1,47 @@
+<form name="signupForm" ng-submit="signupForm.$valid && register()">
+    <div class="form-signin" class="row">
+        <div class="form-group">
+            <div class="alert alert-danger" role="alert" ng-show="registerError">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>{{message}}
+            </div>
+            <div class="row" ng-class="{ 'has-error' : signupForm.email.$invalid && !signupForm.email.$pristine }">
+                <label class="control-label col-sm-3">Email:</label>
+                <div class="col-sm-9">
+                    <input type="email" ng-model="remail" name="email" class="form-control" placeholder="Email" required>
+                    <p ng-show="submitted && signupForm.email.$invalid && !signupForm.email.$pristine" class="help-block">Enter a valid email.</p>
+
+                </div>
+            </div>
+            </br>
+            <div class="row">
+                <label class="control-label col-sm-3">Username:</label>
+                <div class="col-sm-9">
+                    <input type="text" ng-model="rusername" class="form-control" name="rusername" placeholder="username" required>
+
+                </div>
+            </div>
+            <div class="row" ng-class="{ 'has-error' : signupForm.password.$invalid && !signupForm.password.$pristine }">
+                <label class="control-label col-sm-3">Password:</label>
+                <div class="col-sm-9">
+                    <input type="password" ng-model="rpassword" class="form-control" name="password" placeholder="password" required>
+                    <p ng-show="submitted && signupForm.password.$invalid && !signupForm.password.$pristine" class="help-block"> password is required.</p>
+                </div>
+            </div>
+            <div class="row" ng-class="{ 'has-error' : signupForm.confirmPassword.$invalid && !signupForm.confirmPassword.$pristine}">
+                <label class="control-label col-sm-3">Retype Password:</label>
+                <div class="col-sm-9">
+                    <input type="password" ng-model="rrpassword" class="form-control" name="confirmPassword" placeholder="password" required>
+                </div>
+                <p ng-show="submitted && signupForm.confirmPassword.$invalid && !signupForm.confirmPassword.$pristine" class="help-block"> password is required.</p>
+                <p class="alert-error" ng-show=" submitted && rpassword != rrpassword" class="help-block">Passwords do not match...</p>
+            </div>
+            <div class="row" style="text-align:center">
+                <button type="submit" class="btn btn-primary" ng-click="submitted=true" style="background-color:#333;border-color:#333">Register</button>
+            </div>
+            <div class="row">
+                <a href="/" class="pull-left">>>>login</a>
+            </div>
+        </div>
+    </div>
+</form>

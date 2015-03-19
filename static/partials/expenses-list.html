@@ -1,0 +1,171 @@
+<div class="row" style="margin-top:30px">
+    <div class="col-sm-3">
+        <div class="res-box form-group">
+            <div class="row" style="text-align:center">
+                <div class="col-sm-12" ng-click="doShowAdd()">
+                    <button class="btn btn-primary" style="width:130px;background-color:#333;border-color:#333"><span class="glyphicon glyphicon-plus"><b>&nbsp;&nbsp;Expense</b></span>
+                    </button>
+                </div>
+                <div class="col-sm-12" ng-click="doShowFilter()" style="margin-top:5px;margin-bottom:2px;">
+                    <button class="btn btn-primary" style="width:130px;background-color:#333;border-color:#333"><span class="glyphicon glyphicon-filter"><b>&nbsp;&nbsp;Filter</b></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <form name="addExpenseForm">
+            <div class="form-signin form-group" ng-show="showAdd">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="row">
+							 <div class="alert alert-danger" role="alert" ng-show="addError">
+								<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+								<span class="sr-only">Error:</span>{{message}}
+							</div>
+                           <div class="col-sm-12">
+                                <input type="number" ng-model="amount" name="amount" class="form-control" placeholder="Enter Amount e.g. 1000">
+                                <span class="error" ng-show="addExpenseForm.amount.$error.required">
+    Required!</span>
+                                <span class="error" ng-show="addExpenseForm.amount.$error.number">
+    Not valid number!</span>
+                            </div>
+                        </div>
+                        </br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" ng-model="desc" class="form-control" placeholder="Description (200 characters)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input  ng-maxlength="200" type="text" ng-model="comment" class="form-control" placeholder="Comment (200 characters)">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type='text' ng-model="datetime" class="form-control" id="pickedDateId" placeholder="Expense Date/Time"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:10px">
+                            <div class="col-sm-12">
+                                <button class="btn btn-primary" ng-click="add()" style="background-color:#333;border-color:#333">Save</button>
+                                <button class="btn btn-primary" ng-click="saveAndAddMore()" style="background-color:#333;border-color:#333">Save And Add More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-signin form-group" ng-show="showFilter">
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" ng-model="gamt" class="form-control" placeholder="Amount >=">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" ng-model="lamt" class="form-control" placeholder="Amount <=">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" ng-model="descword" class="form-control" placeholder="description containing word">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <input type="text" ng-model="commentword" class="form-control" placeholder="comment containing word">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="text" ng-model="fcal" class="form-control" id='fcalId' placeholder="From date">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="text" ng-model="tcal" class="form-control" id='tcalId' placeholder="To date">
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center">
+                <button class="btn btn-primary" ng-click="resetFilter();getExpenses()" style="background-color:#333;border-color:#333">Reset</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-primary" ng-click="getExpenses()" style="background-color:#333;border-color:#333">Filter</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div class="row res-box" style="max-width:900px">
+            <div class="row">
+                <button href="#" class="pull-left glyphicon glyphicon-arrow-left" style="margin-left:40px;font-size:1.5em;" ng-show="exprev" ng-click="callGetExpenses(exPrevLink)"> </button>
+                <button href="#" class="pull-right glyphicon glyphicon-arrow-right" style="margin-right:40px;font-size:1.5em;" ng-show="exnext" ng-click="callGetExpenses(exNextLink)"></button>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>comment</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Actions
+                            <!--
+					<span ng-click="doShowFilter()" class="pull-left glyphicon glyphicon-filter" style="font-size:1.5em;cursor: pointer;color:#30B330;"	></span>
+					<span ng-click="doShowAdd()" class="pull-left glyphicon glyphicon-plus" style="font-size:1.5em;cursor: pointer;color:#505EBA; margin-left:10px;"></span>
+					-->
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="exp in expenses" id={{exp[ 'id']}} ng-show="exp.show">
+                        <td>
+                            <div ng-hide="editingData[exp.id]">${{exp['amount']}}</div>
+                            <div ng-show="editingData[exp.id]">
+                                <input type="text" ng-model="exp.amount" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-hide="editingData[exp.id]">{{exp['desc']}}</div>
+                            <div ng-show="editingData[exp.id]">
+                                <input type="text" ng-model="exp.desc" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-hide="editingData[exp.id]">{{exp['comment']}}</div>
+                            <div ng-show="editingData[exp.id]">
+                                <input type="text" ng-model="exp.comment" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-hide="editingData[exp.id]">{{exp['date']}}</div>
+                            <div ng-show="editingData[exp.id]">
+                                <input type="text" ng-model="exp.date" />
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-hide="editingData[exp.id]">{{exp['time']}}</div>
+                            <div ng-show="editingData[exp.id]">
+                                <input type="text" ng-model="exp.time" />
+                            </div>
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-ok" ng-show="editingData[exp.id]" aria-hidden="true" ng-click="update(exp)" style="cursor: pointer;color:#30B330;"></span>
+                            <span class="glyphicon glyphicon-edit" ng-hide="editingData[exp.id]" aria-hidden="true" ng-click="modify(exp)" style="cursor: pointer;color:#333;"></span>&nbsp;&nbsp;&nbsp;
+                            <span class="glyphicon glyphicon-remove" ng-hide="editingData[exp.id]" aria-hidden="true" ng-click="delete(exp)" style="cursor: pointer;color:#D62222;"></span>
+                        </td>
+                    </tr>
+
+                </tbody>
+                <table>
+        </div>
+        <div class="row">
+            <button href="#" class="pull-left glyphicon glyphicon-arrow-left" style="margin-left:40px;font-size:1.5em;" ng-show="exprev" ng-click="callGetExpenses(exPrevLink)"></button>
+            <button href="#" class="pull-right glyphicon glyphicon-arrow-right" style="margin-right:40px;font-size:1.5em;" ng-show="exnext" ng-click="callGetExpenses(exNextLink)"></button>
+        </div>
+    </div>
+</div>

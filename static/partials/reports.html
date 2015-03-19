@@ -1,0 +1,38 @@
+<div class="row" style="margin-top:30px">
+
+    <div class="col-sm-12" style="text-align:center;">
+        <div class="row">
+            <span class="glyphicon glyphicon-print" ng-click="print()" style="font-size:1.5em;color:#3E90C9;cursor: pointer;"></span>
+        </div>
+    </div>
+    <div class="col-sm-12" id="reportPrint">
+        <div class="row res-box" style="max-width:900px;text-align:center;margin-bottom:0px;">
+            <H4>{{reportMsg}}</H4>
+        </div>
+        <div class="row res-box" style="max-width:900px;margin-top:2px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Start Date</th>
+                        <th>Total Expense</th>
+                        <th>Daily Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rpt in reports">
+                        <td>
+                            <div>{{rpt['date']}}</div>
+                        </td>
+                        <td>
+                            <div>${{rpt['total']}}</div>
+                        </td>
+                        <td>
+                            <div>${{rpt['average']}}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
